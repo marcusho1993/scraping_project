@@ -1,6 +1,8 @@
 # Scraping Project
 
-Run `scraping_project.py`, which grabs data on every quote from the website <http://quotes.toscrape.com>
+Run `scraping_project.py`, which grabs data on every quote from the website <http://quotes.toscrape.com> to update the quotes.
+
+Run `game.py` to start the game.
 
 This project uses **BeautifualSoup** and **requests** to get the data.
 

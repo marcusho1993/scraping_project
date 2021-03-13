@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from time import sleep
-from csv import writer
+from csv import DictWriter
 
 all_quotes = []
 
@@ -20,7 +20,7 @@ while url:
     for quote in quotes:
         all_quotes.append(
             {
-                "text": quote.find(class_="text").get_text(),
+                "text": quote.find(class_="text").get_text().strip("“").strip("”"),
                 "author": quote.find(class_="author").get_text(),
                 "bio_link": quote.find("a")["href"],
             }
@@ -30,3 +30,8 @@ while url:
     url = next_btn.find("a")["href"] if next_btn else None
     # stop scraping for every 2 seconds
     sleep(2)
+
+with open("quotes.csv", "w") as csv_file:
+    csv_writer = DictWriter(csv_file, ["text", "author", "bio_link"])
+    csv_writer.writeheader()
+    csv_writer.writerows(all_quotes)
