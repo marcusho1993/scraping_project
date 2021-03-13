@@ -1,3 +1,4 @@
+from game import BASE_URL
 import requests
 from bs4 import BeautifulSoup
 from time import sleep
@@ -5,13 +6,13 @@ from csv import DictWriter
 
 all_quotes = []
 
-base_url = "http://quotes.toscrape.com"
+BASE_URL = "http://quotes.toscrape.com"
 url = "/page/1"
 
 while url:
     # GET request to URL
-    res = requests.get(f"{base_url}{url}")
-    print(f"Now Scraping {base_url}{url}")
+    res = requests.get(f"{BASE_URL}{url}")
+    print(f"Now Scraping {BASE_URL}{url}")
 
     # Scraping
     soup = BeautifulSoup(res.text, "html.parser")
@@ -19,7 +20,7 @@ while url:
     # append quote to all_quote as dicts
     for quote in quotes:
         bio_link = quote.find("a")["href"]
-        bio_res = requests.get(f"{base_url}{bio_link}")
+        bio_res = requests.get(f"{BASE_URL}{bio_link}")
         bio_soup = BeautifulSoup(bio_res.text, "html.parser")
 
         all_quotes.append(
@@ -38,7 +39,7 @@ while url:
     next_btn = soup.find(class_="next")
     url = next_btn.find("a")["href"] if next_btn else None
     # stop scraping for every 2 seconds
-    # sleep(2)
+    sleep(2)
 
 with open("quotes.csv", "w") as csv_file:
     csv_writer = DictWriter(
