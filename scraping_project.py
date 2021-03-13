@@ -18,20 +18,31 @@ while url:
     quotes = soup.find_all(class_="quote")
     # append quote to all_quote as dicts
     for quote in quotes:
+        bio_link = quote.find("a")["href"]
+        bio_res = requests.get(f"{base_url}{bio_link}")
+        bio_soup = BeautifulSoup(bio_res.text, "html.parser")
+
         all_quotes.append(
             {
                 "text": quote.find(class_="text").get_text().strip("“").strip("”"),
                 "author": quote.find(class_="author").get_text(),
-                "bio_link": quote.find("a")["href"],
+                "author_born_date": bio_soup.body.find(
+                    class_="author-born-date"
+                ).get_text(),
+                "author_born_location": bio_soup.body.find(
+                    class_="author-born-location"
+                ).get_text(),
             }
         )
     # get next page url
     next_btn = soup.find(class_="next")
     url = next_btn.find("a")["href"] if next_btn else None
     # stop scraping for every 2 seconds
-    sleep(2)
+    # sleep(2)
 
 with open("quotes.csv", "w") as csv_file:
-    csv_writer = DictWriter(csv_file, ["text", "author", "bio_link"])
+    csv_writer = DictWriter(
+        csv_file, ["text", "author", "author_born_date", "author_born_location"]
+    )
     csv_writer.writeheader()
     csv_writer.writerows(all_quotes)

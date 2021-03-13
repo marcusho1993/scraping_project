@@ -4,7 +4,7 @@ Run `scraping_project.py`, which grabs data on every quote from the website <htt
 
 Run `game.py` to start the game.
 
-This project uses **BeautifualSoup** and **requests** to get the data.
+This project uses **BeautifualSoup** to scrap the data.
 
 This **cli program** displays the **quote** to the user and ask who said it. The player will have **four** guesses remaining.
 
